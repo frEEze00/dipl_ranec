@@ -28,7 +28,6 @@ namespace dipl_ranec {
             bp.GetInfoOfBackPack(bp.Items);
             bp.PrintData(bp.ResultForGreedyChoice);
             bp.GetInfoOfBackPack(bp.ResultForGreedyChoice);
-            MessageBox.Show("sdsa");
             bp.Calculate(30, 100);
             //Random rnd = new Random();
             //int temp;
