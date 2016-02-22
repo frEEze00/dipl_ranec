@@ -21,14 +21,29 @@ namespace dipl_ranec {
         public MainWindow() {
             InitializeComponent();
             var bp = new BackPack();
-            bp.GenerateData(25, 200, 1000);
-            bp.Volume = 1500;
+            var help = new Helper();
+            //help.TimeStart();
+            bp.GenerateData(100000, 100, 1000);
+            //help.TimeFinish();
+            //help.CalculateTime();
+
+            bp.Volume = 150000;
+            help.TimeStart();
+            Console.WriteLine(bp.Met(bp.Volume).ToString("res: 0"));
+            help.TimeFinish();
+            help.CalculateTime();
+
+            help.TimeStart();
             bp.GreedyAlgorithm();
-            bp.PrintData(bp.Items);
+            help.TimeFinish();
+            help.CalculateTime();
+
+            //bp.PrintData(bp.Items);
             bp.GetInfoOfBackPack(bp.Items);
-            bp.PrintData(bp.ResultForGreedyChoice);
+           // bp.PrintData(bp.ResultForGreedyChoice);
             bp.GetInfoOfBackPack(bp.ResultForGreedyChoice);
-            bp.Calculate(30, 100);
+
+           // bp.Calculate(30, 100);
             //Random rnd = new Random();
             //int temp;
             //for (int i = 0; i < 10; i++) {

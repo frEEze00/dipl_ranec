@@ -88,7 +88,6 @@ namespace dipl_ranec {
             }         
         }
         #endregion
-
         #region
         // Генетический алгоритм
         public List<Item> ResultForGeneticAlgorithm = new List<Item>();
@@ -328,6 +327,24 @@ namespace dipl_ranec {
                 q = 1 - (Math.Sqrt(Math.Abs(GetCostOfCromosome(chr) - GetCostOfBackPack(Items)) / delMax));
             }
             return q;
+        }
+        #endregion
+        #region
+        //Точный метод 
+        public int Met( int needed) {
+            int n = Items.Count;
+            int[,] dp = new int[needed + 1, n + 1];
+            for (int j = 1; j <= n; j++) {
+                for (int w = 1; w <= needed; w++) {
+                    if (Items[j - 1].Mas <= w) {
+                        dp[w, j] = Math.Max(dp[w, j - 1], dp[w - Items[j - 1].Mas, j - 1] + Items[j - 1].Cost);
+                    }
+                    else {
+                        dp[w, j] = dp[w, j - 1];
+                    }
+                }
+            }
+            return dp[needed, n];
         }
         #endregion
     }
