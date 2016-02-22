@@ -30,24 +30,20 @@ namespace dipl_ranec {
             using (TextWriter writer = new StreamWriter(tempFileName)) {
                 try {
                     writer.WriteLine("<html>");
-                    writer.WriteLine("<head><title>Links</title></head>");
+                    writer.WriteLine("<head><meta charset=\"utf-8\"><title>Задача о ранце</title></head>");
                     writer.WriteLine("<body>");
 
                     writer.WriteLine("<p>");
 
                     writer.WriteLine("<table border=\"1\">");
-                    writer.WriteLine("<caption>Input DATA Table</caption>");
+                    writer.WriteLine("<caption>Input Data Table</caption>");
                     writer.WriteLine("<tr><th>Cost</th><th>Mas</th><th>Use</th></tr>");
                     foreach (var item in inputItems) {
-                        if (item.Use) {
-                            writer.WriteLine("<tr> <td>{0}</td> <td>{1}</td> <td><font color=\"green\">{2}</font></td></tr>", 
-                                item.Cost, item.Mas, item.Use);
-                        }
-                        else {
-                            writer.WriteLine("<tr> <td>{0}</td> <td>{1}</td> <td><font color=\"red\">{2}</font></td></tr>",
-                                item.Cost, item.Mas, item.Use);
-                        }
-                        
+                        writer.WriteLine(
+                            item.Use
+                                ? "<tr> <td>{0}</td> <td>{1}</td> <td><font color=\"green\">{2}</font></td></tr>"
+                                : "<tr> <td>{0}</td> <td>{1}</td> <td><font color=\"red\">{2}</font></td></tr>",
+                            item.Cost, item.Mas, item.Use);
                     }
                     writer.WriteLine("</table>");
                     writer.WriteLine("</p>");
