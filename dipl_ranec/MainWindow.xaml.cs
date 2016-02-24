@@ -22,42 +22,29 @@ namespace dipl_ranec {
             InitializeComponent();
             var bp = new BackPack();
             var help = new Helper();
-            //help.TimeStart();
+            string Time = "";
+            help.TimeStart();                  
+            bp.GenerateData(20, 10000, 10000);
+            Time += help.TimeFinish() + "Generate\n";
+            bp.Volume = 3000;
 
-
-            bp.GenerateData(10, 100, 10000);
-            //help.TimeFinish();
-            //help.CalculateTime();
-
-            bp.Volume = 300;
-            //help.TimeStart();
-            //Console.WriteLine(bp.Met(bp.Volume).ToString("res: 0"));
-            //help.TimeFinish();
-            //help.CalculateTime();
-
-            //help.TimeStart();
+            help.TimeStart();
             bp.GreedyAlgorithm();
-            //help.TimeFinish();
-            //help.CalculateTime();
+            Time += help.TimeFinish() + "Greedy\n";
 
-            help.CreateHtmlFile(bp.Items,bp.ResultForGreedyChoice);
+            help.TimeStart();
+            bp.Calculate(20, 5);
+            Time += help.TimeFinish() + "Genetic\n";
+            int temp;
+            help.TimeStart();
+            temp = bp.Met(bp.Volume, bp.Items);
+            Time += help.TimeFinish() + "To4n\n";
+            Time += temp + "\n";
 
-            //bp.PrintData(bp.Items);
-            bp.GetInfoOfBackPack(bp.Items);
-            // bp.PrintData(bp.ResultForGreedyChoice);
-            bp.GetInfoOfBackPack(bp.ResultForGreedyChoice);
+            MessageBox.Show(Time);
+            help.CreateHtmlFile(bp.Items, bp.ResultForGreedyChoice, bp.ResultForGeneticAlgorithm);
 
-            // bp.Calculate(30, 100);
-            //Random rnd = new Random();
-            //int temp;
-            //for (int i = 0; i < 10; i++) {
-            //    temp = rnd.Next(0, 2);
-            //    Console.WriteLine(temp.ToString() + "\t" 
-            //        + Convert.ToBoolean(temp).ToString());
-            //}
-
-
-            Console.ReadLine();
+            //Console.ReadLine();
         }
     }
 }

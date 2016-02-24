@@ -106,20 +106,11 @@ namespace dipl_ranec {
         }
         public void Calculate(int countOfChromosomes, int countOfIterations) {
             CreatePopulation(countOfChromosomes);
-            PrintChromosomesRes(PopulationStart);
-            Console.WriteLine(@"-----------------");
-            PopulationFinish = Crossing(PopulationStart, 50);
-            PrintChromosomesRes(PopulationFinish);
-            Console.WriteLine(@"-----------------");
-            Console.ReadKey();
+            PopulationFinish = Crossing(PopulationStart, countOfChromosomes * 2);
             for (var i = 1; i < countOfIterations; i++) {
                 PopulationFinish = Crossing(PopulationFinish, 50);
-                PrintChromosomesRes(PopulationFinish);
-                Console.WriteLine(@"-----------------");
             }
-           
-            Console.WriteLine(@"-----------------");
-            PrintChromosomesRes(PopulationFinish);
+            GetResult();
         }
         public void CreatePopulationMax(int countOfChromosomes) {
             //генерация максимального количества используемых предметов
@@ -145,11 +136,10 @@ namespace dipl_ranec {
                 if (tempMas > Volume) {
                     tempChrom.Chrom[tempIndex] = false;
                 }
-                //tempChrom.q = EvaluationOfChromosomeMas(tempChrom);
+               //tempChrom.Q = EvaluationOfChromosomeMas(tempChrom);
                 tempChrom.Q = EvaluationOfChromosomeCost(tempChrom);
                 PopulationStart.Add(tempChrom);
             }
-            PrintChromosomes(PopulationStart);
         }
         public void CreatePopulation(int countOfChromosomes) {
             //генерация некоторого количества используемых предметов
@@ -170,12 +160,11 @@ namespace dipl_ranec {
                     tempChrom.Chrom[tempIndex] = true;
                     tempMas += Items[tempIndex].Mas;
                 }
-                //tempChrom.q = EvaluationOfChromosomeMas(tempChrom);
+                //tempChrom.Q = EvaluationOfChromosomeMas(tempChrom);
                 tempChrom.Q = EvaluationOfChromosomeCost(tempChrom);
                 PopulationStart.Add(tempChrom);
                 
             }
-            PrintChromosomes(PopulationStart);
         }
         public int GetMasOfCromosome(Chromosome chr)
         {
@@ -237,33 +226,35 @@ namespace dipl_ranec {
                     if (i == j) continue;
                     var index = rnd.Next(0, Items.Count);
                     tempChr.Chrom = Swap(popul[i].Chrom, popul[j].Chrom, index);
-                    //tempChr.q = EvaluationOfChromosomeMas(tempChr);
+                    //tempChr.Q = EvaluationOfChromosomeMas(tempChr);
                     tempChr.Q = EvaluationOfChromosomeCost(tempChr);
-                    if (!result.Contains(tempChr)) {
                         if (GetMasOfCromosome(tempChr) <= Volume) {
                             result.Add(tempChr);
-                        }
-                    }                        
+                        }                  
                     tempChr.Chrom = Swap(popul[j].Chrom, popul[i].Chrom, index);
-                    //tempChr.q = EvaluationOfChromosomeMas(tempChr);
+                    //tempChr.Q = EvaluationOfChromosomeMas(tempChr);
                     tempChr.Q = EvaluationOfChromosomeCost(tempChr);
-                    if (result.Contains(tempChr)) continue;
                     if (GetMasOfCromosome(tempChr) <= Volume) {
                         result.Add(tempChr);
                     }
                 }
             }
-            //result.Sort(delegate (Chromosome strct1, Chromosome strct2) { return GetCostOfCromosome(strct2).CompareTo(GetCostOfCromosome(strct1)); });
             result = Mutation(result);
+
+            //result.Sort(delegate (Chromosome strct1, Chromosome strct2) { return GetCostOfCromosome(strct2).CompareTo(GetCostOfCromosome(strct1)); });
             //result = result.OrderBy(x => -(x.q)).ThenBy(x => -GetCostOfCromosome(x)).ThenBy(x => GetMasOfCromosome(x)).ToList();
-            //result = result.OrderBy(x => -x.q).ThenBy(x => -GetCostOfCromosome(x)).ToList();
+            //result = result.OrderBy(x => -x.Q).ThenBy(x => -GetCostOfCromosome(x)).ToList();
             //result = result.OrderBy(x => -GetCostOfCromosome(x)).ThenBy(x => -(x.q)).ToList();
             result = result.OrderBy(x => -(x.Q)).ToList();          
-            for (var i = 0; i < result.Count; i++) {
-                if (GetMasOfCromosome(result[i]) <= 1500) continue;
-                result.RemoveAt(i);
-                i--;
-            }
+
+
+            //for (var i = 0; i < result.Count; i++) {
+            //    if (GetMasOfCromosome(result[i]) <= Volume) continue;
+            //    result.RemoveAt(i);
+            //    i--;
+            //}
+
+
             for (var i = result.Count - 1; i > maxCount; i--) {
                 result.RemoveAt(i);
             }
@@ -274,23 +265,16 @@ namespace dipl_ranec {
             for (var i = 0; i < popul.Count; i++) {
                 if (rnd.Next()%2 != 0) continue;
                 var index = rnd.Next(0, Items.Count);
-                Chromosome tempChr;
-                if (popul[i].Chrom[index])
-                {
-                    tempChr = popul[i];
-                    tempChr.Chrom[index] = false;
-                    //tempChr.q = EvaluationOfChromosomeMas(tempChr);
-                    tempChr.Q = EvaluationOfChromosomeCost(tempChr);
-                    popul[i] = tempChr;
-                }
-                else
-                {
-                    tempChr = popul[i];
-                    tempChr.Chrom[index] = true;
-                    //tempChr.q = EvaluationOfChromosomeMas(tempChr);
-                    tempChr.Q = EvaluationOfChromosomeCost(tempChr);
-                    popul[i] = tempChr;
-                }
+                var tempChr = popul[i];
+                tempChr.Chrom[index] = !popul[i].Chrom[index];
+                //tempChr.Q = EvaluationOfChromosomeMas(tempChr);
+                tempChr.Q = EvaluationOfChromosomeCost(tempChr);
+                popul[i] = tempChr;
+            }
+            for (var i = 0; i < popul.Count; i++) {
+                if (GetMasOfCromosome(popul[i]) <= Volume) continue;
+                popul.RemoveAt(i);
+                i--;
             }
             return popul;
         }
@@ -328,16 +312,23 @@ namespace dipl_ranec {
             }
             return q;
         }
+        private void GetResult() {
+            for (var i = 0; i < PopulationFinish[0].Chrom.Length; i++) {
+                if (PopulationFinish[0].Chrom[i]) {
+                    ResultForGeneticAlgorithm.Add(Items[i]);
+                }
+            }
+        }
         #endregion
         #region
         //Точный метод 
-        public int Met( int needed) {
-            int n = Items.Count;
+        public int Met(int needed, List<Item> data) {
+            int n = data.Count;
             int[,] dp = new int[needed + 1, n + 1];
             for (int j = 1; j <= n; j++) {
                 for (int w = 1; w <= needed; w++) {
-                    if (Items[j - 1].Mas <= w) {
-                        dp[w, j] = Math.Max(dp[w, j - 1], dp[w - Items[j - 1].Mas, j - 1] + Items[j - 1].Cost);
+                    if (data[j - 1].Mas <= w) {
+                        dp[w, j] = Math.Max(dp[w, j - 1], dp[w - data[j - 1].Mas, j - 1] + data[j - 1].Cost);
                     }
                     else {
                         dp[w, j] = dp[w, j - 1];
@@ -346,6 +337,7 @@ namespace dipl_ranec {
             }
             return dp[needed, n];
         }
+
         #endregion
     }
 }
