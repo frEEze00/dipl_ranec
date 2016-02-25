@@ -302,15 +302,32 @@ namespace dipl_ranec {
         }
         public double EvaluationOfChromosomeCost(Chromosome chr) {
             double q;
-
+            /*
             double delMax = Math.Max(GetCostOfBackPack(Items), GetCostOfBackPack(Items) - GetCostOfCromosome(chr));
             if (GetCostOfCromosome(chr) <= GetCostOfBackPack(Items)) {
                 q = 1 - (Math.Sqrt((double)Math.Abs(GetCostOfCromosome(chr) - GetCostOfBackPack(Items)) / GetCostOfBackPack(Items)));
             }
             else {
                 q = 1 - (Math.Sqrt(Math.Abs(GetCostOfCromosome(chr) - GetCostOfBackPack(Items)) / delMax));
+            }*/
+
+            /*
+            if (GetCostOfCromosome(chr) != 0) {
+                return q = (double)GetCostOfCromosome(chr) / GetMasOfCromosome(chr);
             }
-            return q;
+            else {
+                return 0;
+            }*/
+
+            double delMax = Math.Max(Volume, GetMasOfBackPack(Items) - Volume);
+            if (GetMasOfCromosome(chr) <= Volume) {
+                q = 1 - Math.Sqrt(Math.Abs((double)GetMasOfCromosome(chr) - Volume) / Volume);
+            }
+            else {
+                q = 1 - Math.Sqrt(Math.Abs((double)GetMasOfCromosome(chr) - Volume) / delMax);
+            }
+
+            return q*((double)GetCostOfCromosome(chr) / GetMasOfCromosome(chr));
         }
         private void GetResult() {
             for (var i = 0; i < PopulationFinish[0].Chrom.Length; i++) {
@@ -322,8 +339,12 @@ namespace dipl_ranec {
         #endregion
         #region
         //Точный метод 
+        public List<Item> To4nResult = new List<Item>();
+        private bool[] uses;
         public int Met(int needed, List<Item> data) {
             int n = data.Count;
+            uses = new bool[n];
+            
             int[,] dp = new int[needed + 1, n + 1];
             for (int j = 1; j <= n; j++) {
                 for (int w = 1; w <= needed; w++) {
@@ -338,6 +359,18 @@ namespace dipl_ranec {
             return dp[needed, n];
         }
 
+        public int CalculateMet2(List<Item> data) {
+            uses = new bool[data.Count];
+            Met2(data, 0, 0);
+            return 0;
+        }
+
+        public int Met2(List<Item> data, int k, int max) {
+            if (k < data.Count) {
+                
+            }
+            return 0;
+        }
         #endregion
     }
 }
