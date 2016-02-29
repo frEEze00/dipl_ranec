@@ -338,6 +338,36 @@ namespace dipl_ranec {
         }
         #endregion
         #region
+        //Случайный поиск
+        public List<Item> ResultForRandomSearch = new List<Item>();
+        public void RandomSearch(int countOfTests) {
+            int countOfItems = Items.Count;
+            bool[] mask = new bool[countOfItems];
+            bool[] result = new bool[countOfItems];           
+            long maxMas = 0;
+            
+            Random rnd = new Random();
+            long temp;
+            for (int i = 0; i < countOfTests; i++) {
+                for (int j = 0; j < countOfItems; j++) {
+                    if (rnd.Next() % 2 == 0) {
+                        mask[j] = !mask[j];
+                    }
+                }
+                temp = Items.Where((t, k) => mask[k]).Sum(t => t.Mas);
+                if (temp > maxMas) {
+                    maxMas = temp;
+                    result = mask;
+                }
+            }
+            for (int i = 0; i < countOfItems; i++) {
+                if (result[i]) {
+                    ResultForRandomSearch.Add(Items[i]);
+                }
+            }
+        }
+        #endregion
+        #region
         //Точный метод 
         public List<Item> To4nResult = new List<Item>();
         private bool[] uses;

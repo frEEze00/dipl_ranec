@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using Mathcad;
+using Application = Mathcad.Application;
 
 namespace dipl_ranec {
     class Helper : BackPack {
@@ -37,14 +39,17 @@ namespace dipl_ranec {
             
         }
         private void CreateTableForInputData(TextWriter writer, List<Item> data, 
-            List<Item> greedyResult, List<Item> geneticResult) {
+            List<Item> greedyResult, List<Item> geneticResult, List<Item> randomResult) {
             int id = 0;
             writer.WriteLine("<table border=\"1\">");
             writer.WriteLine("<caption>Input Data</caption>");
-            writer.WriteLine("<tr><th>ID</th><th>Cost</th><th>Mas</th><th>Greedy</th><th>Genetic</th></tr>");
+            writer.WriteLine("<tr><th>ID</th><th>Cost</th><th>Mas</th><th>Greedy</th><th>Random</th><th>Greedy</th></tr>");
             foreach (var item in data) {
                 writer.Write("<tr> <td>{0}</td> <td>{1}</td>  <td>{2}</td>",id++, item.Cost, item.Mas, item.Use);
                 writer.Write(greedyResult.Contains(item)
+                    ? "<td><font color=\"green\">Use</font></td>"
+                    : "<td><font color=\"red\">Not Use</font></td>");
+                writer.WriteLine(randomResult.Contains(item)
                     ? "<td><font color=\"green\">Use</font></td>"
                     : "<td><font color=\"red\">Not Use</font></td>");
                 writer.WriteLine(geneticResult.Contains(item)
@@ -54,7 +59,8 @@ namespace dipl_ranec {
 
             writer.WriteLine("</table>");
         }
-        public void CreateHtmlFile(List<Item> inputItems, List<Item> greedyResult, List<Item> geneticResult, List<Item> to4nResult, int to4nCost) {
+        public void CreateHtmlFile(List<Item> inputItems, List<Item> greedyResult, 
+            List<Item> geneticResult, List<Item> to4nResult, int to4nCost, List<Item> randomResult) {
 
             string tempFileName = "html\\" + DateTime.Now.ToString("d").Replace('.', '-') + " " + DateTime.Now.ToString("T").Replace(':', '-') + ".html";
             using (TextWriter writer = new StreamWriter(tempFileName)) {
@@ -68,19 +74,23 @@ namespace dipl_ranec {
                     writer.WriteLine("<H3> Input Mas = " + GetMasOfBackPack(inputItems) + "</H3>");
                     writer.WriteLine("<H3> greedyResult Cost = " + GetCostOfBackPack(greedyResult) + "</H3>");
                     writer.WriteLine("<H3> greedyResult Mas = " + GetMasOfBackPack(greedyResult) + "</H3>");
+                    writer.WriteLine("<H3> randomResult Cost = " + GetCostOfBackPack(randomResult) + "</H3>");
+                    writer.WriteLine("<H3> randomResult Mas = " + GetMasOfBackPack(randomResult) + "</H3>");
                     writer.WriteLine("<H3> geneticResult Cost = " + GetCostOfBackPack(geneticResult) + "</H3>");
-                    writer.WriteLine("<H3> geneticResult Mas = " + GetMasOfBackPack(geneticResult) + "</H3>");
+                    writer.WriteLine("<H3> geneticResult Mas = " + GetMasOfBackPack(geneticResult) + "</H3>");                    
 
                     writer.WriteLine("<H3> Точный метод Cost = " + to4nCost + "</H3>");
 
                     writer.WriteLine("<table border=\"0\">");
                     writer.WriteLine("<caption>Results</caption>");
-                    writer.WriteLine("<tr> <td></td> <td></td> <td></td></tr>");
+                    writer.WriteLine("<tr> <td></td> <td></td> <td></td> <td></td> </tr>");
 
                     writer.Write("<tr> <td valign=\"top\">");
-                    CreateTableForInputData(writer, inputItems, greedyResult, geneticResult);
+                    CreateTableForInputData(writer, inputItems, greedyResult, geneticResult, randomResult);
                     writer.Write("</td> <td valign=\"top\">");
                     CreateTableForResult(writer, greedyResult, @"GreedyResult");
+                    writer.Write("</td> <td valign=\"top\">");
+                    CreateTableForResult(writer, randomResult, @"RandomResult");
                     writer.Write("</td> <td valign=\"top\">");
                     CreateTableForResult(writer, geneticResult, @"GeneticResult");
                     writer.Write("</td></tr>");
@@ -131,6 +141,26 @@ namespace dipl_ranec {
 
         public void CreateExcell() {
             
+        }
+
+        public void MathCad() {
+            IMathcadApplication mc = new Application();
+            IMathcadWorksheets mwk = mc.Worksheets;
+            IMathcadWorksheet ws = mwk.Open("h:\\test2.xmcd");
+            ws.SetValue("A", 2);
+            Console.WriteLine("A = 2");
+
+            ws.SetValue("B", 2);
+            Console.WriteLine("B = 2");
+
+            ws.Recalculate();
+
+            Console.WriteLine("C = A + B = {0}", (ws.GetValue("C") as INumericValue).Real);
+
+            mc.Visible = true;
+
+            mc.ActiveWorksheet.Close(Mathcad.MCSaveOption.mcDiscardChanges);
+            mc.Quit(Mathcad.MCSaveOption.mcDiscardChanges);
         }
     }
 }
