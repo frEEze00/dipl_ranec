@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using Mathcad;
 using Application = Mathcad.Application;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace dipl_ranec {
     class Helper : BackPack {
@@ -140,7 +141,22 @@ namespace dipl_ranec {
         }
 
         public void CreateExcell() {
+            Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
+            Excel._Workbook nwb = null;
+            Excel._Worksheet nws = null;
+            Excel.Range nrange = null;
             
+
+            //Get a new workbook.
+            nwb = excelApp.Workbooks.Add();
+            nws = (Excel._Worksheet)nwb.ActiveSheet;
+            nws.Cells[10, 1] = "texttexttexttexttexttext";
+            nws.Range["A1:A3"].Value = "Who is number one? :)";
+            nws.Range["A4"].Value = "vitoshacademy.com";
+            excelApp.Visible = true;
+            nws.SaveAs(@"C:\Users\frEEze\Documents\Visual Studio 2015\Projects\dipl_ranec\dipl_ranec\bin\Debug\excel\test2.xlsx");
+           // nws.SaveAs("test1");
+
         }
 
         public void MathCad() {

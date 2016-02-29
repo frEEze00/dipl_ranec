@@ -24,7 +24,7 @@ namespace dipl_ranec {
             var help = new Helper();
             string Time = "";
 
-            int countOfItems = 2000;
+            int countOfItems = 20;
             int maxMas = 1000;
             int maxCost = 100;
             int volume = (maxMas / 3) * countOfItems;
@@ -44,7 +44,7 @@ namespace dipl_ranec {
             Time += help.TimeFinish() + " Random\n";
 
             help.TimeStart();
-            bp.Calculate(20, 5);
+            //bp.Calculate(20, 5);
             Time += help.TimeFinish() + " Genetic\n";
             int temp = 0;
             help.TimeStart();
@@ -52,10 +52,11 @@ namespace dipl_ranec {
             Time += help.TimeFinish() + " To4n\n";
             //Time += temp + "\n";
 
-            MessageBox.Show(Time);
-            help.CreateHtmlFile(bp.Items, bp.ResultForGreedyChoice, bp.ResultForGeneticAlgorithm, bp.To4nResult, temp, bp.ResultForRandomSearch);
+            //MessageBox.Show(Time);
+            //help.CreateHtmlFile(bp.Items, bp.ResultForGreedyChoice, bp.ResultForGeneticAlgorithm, bp.To4nResult, temp, bp.ResultForRandomSearch);
             this.Close();
             //help.MathCad();
+            help.CreateExcell();
             Console.ReadLine();
 
             
