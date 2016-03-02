@@ -165,11 +165,6 @@ namespace dipl_ranec {
             nwb = excelApp.Workbooks.Add();
             nws = (Excel._Worksheet) nwb.ActiveSheet;
 
-            Excel._Worksheet nws2 = nwb.Worksheets[2];
-            nws2.Name = "dsd";
-           Console.WriteLine(nwb.Worksheets.Count.ToString());
-
-
             nws.Name = "Input Data";
             int counter = 2;
             nws.Cells[1, 1] = "Mas";
@@ -208,8 +203,45 @@ namespace dipl_ranec {
                 counter++;
             }           
             nws.Columns.EntireColumn.AutoFit();
-            excelApp.Visible = true;
 
+
+            Excel._Worksheet nws2 = nwb.Worksheets[2];
+            nws2.Name = "Greedy";
+            counter = 2;
+            nws2.Cells[1, 1] = "Mas";
+            nws2.Cells[1, 2] = "Cost";
+            foreach (var item in greedyResult) {
+                nws2.Cells[counter, 1] = item.Mas.ToString();
+                nws2.Cells[counter, 2] = item.Cost.ToString();
+                counter++;
+            }
+            nws2.Columns.EntireColumn.AutoFit();
+
+            Excel._Worksheet nws3 = nwb.Worksheets[3];
+            nws3.Name = "Random";
+            counter = 2;
+            nws3.Cells[1, 1] = "Mas";
+            nws3.Cells[1, 2] = "Cost";
+            foreach (var item in randomResult) {
+                nws3.Cells[counter, 1] = item.Mas.ToString();
+                nws3.Cells[counter, 2] = item.Cost.ToString();
+                counter++;
+            }
+            nws3.Columns.EntireColumn.AutoFit();
+            /*
+            Excel.Worksheet nws4 = (Excel.Worksheet) excelApp.Workbooks.Add();
+            //Excel._Worksheet nws4 = nwb.Worksheets[4];
+            nws4.Name = "Genetic";
+            counter = 2;
+            nws4.Cells[1, 1] = "Mas";
+            nws4.Cells[1, 2] = "Cost";
+            foreach (var item in geneticResult) {
+                nws4.Cells[counter, 1] = item.Mas.ToString();
+                nws4.Cells[counter, 2] = item.Cost.ToString();
+            }
+            nws4.Columns.EntireColumn.AutoFit();
+            */
+            excelApp.Visible = true;
             nws.SaveAs(
                 @"C:\Users\frEEze\Documents\Visual Studio 2015\Projects\dipl_ranec\dipl_ranec\bin\Debug\excel\test2.xlsx");
 
