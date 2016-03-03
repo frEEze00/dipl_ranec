@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 
 namespace dipl_ranec {
@@ -13,6 +14,7 @@ namespace dipl_ranec {
         }
         public int Volume;
         public void GenerateData(int count, int maxMas, int maxCost) {
+            int consol = 0;
             Items.Clear();
             var rnd = new Random();
             for (var i = 0; i < count; i++) {
@@ -22,7 +24,18 @@ namespace dipl_ranec {
                     Mas = rnd.Next(1, maxMas),
                     Use = false
                 };
-                Items.Add(el);
+                
+                try {
+                    Items.Add(el);
+                    /*if (((double)i * 100)/count > consol) {
+                        consol++;
+                        Console.Clear();
+                        Console.WriteLine(consol.ToString());
+                    }*/
+                }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.ToString() + i.ToString("    \n0"));
+                }
             }
         }
         public void PrintData(List<Item> data) {

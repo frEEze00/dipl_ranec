@@ -24,7 +24,7 @@ namespace dipl_ranec {
             var help = new Helper();
             string Time = "";
 
-            int countOfItems = 100;
+            int countOfItems = 40000000;
             int maxMas = 1000;
             int maxCost = 100;
             int volume = (maxMas / 3) * countOfItems;
@@ -33,14 +33,14 @@ namespace dipl_ranec {
             bp.GenerateData(countOfItems, maxMas, maxCost);
             Time += help.TimeFinish() + " Generate\n";
             bp.Volume = volume;
-            help.CreateTxtFile(bp.Items, volume, maxCost, maxMas);
+           // help.CreateTxtFile(bp.Items, volume, maxCost, maxMas);
 
             help.TimeStart();
             bp.GreedyAlgorithm();
             Time += help.TimeFinish() + " Greedy\n";
 
             help.TimeStart();
-            bp.RandomSearch(100);
+            //bp.RandomSearch(100);
             Time += help.TimeFinish() + " Random\n";
 
             help.TimeStart();
@@ -52,11 +52,11 @@ namespace dipl_ranec {
             Time += help.TimeFinish() + " To4n\n";
             //Time += temp + "\n";
 
-            //MessageBox.Show(Time);
+            MessageBox.Show(Time);
             //help.CreateHtmlFile(bp.Items, bp.ResultForGreedyChoice, bp.ResultForGeneticAlgorithm, bp.To4nResult, temp, bp.ResultForRandomSearch);
             this.Close();
             //help.MathCad();
-            help.CreateExcell(bp.Items, bp.ResultForGreedyChoice, bp.ResultForGeneticAlgorithm, bp.ResultForRandomSearch);
+            //help.CreateExcell(bp.Items, bp.ResultForGreedyChoice, bp.ResultForGeneticAlgorithm, bp.ResultForRandomSearch);
             Console.ReadLine();
 
             
