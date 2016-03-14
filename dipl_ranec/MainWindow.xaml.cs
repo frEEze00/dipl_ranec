@@ -20,11 +20,32 @@ namespace dipl_ranec {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
+            var help = new Helper();
+
+
+            TravellingSalesmanProblem travelling = new TravellingSalesmanProblem();
+            int CountOfVertex = 100;
+            travelling.CountOfVertex = CountOfVertex;
+            travelling.GenerateData(10);
+
+            /*
+            travelling.PrintData();
+
+            int chance = 1;
+            do {
+                chance =Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
+                Console.WriteLine("{0}", chance);
+                travelling.GenerateData(10, chance);
+                travelling.PrintData();
+            } while (chance != 0);
+            */
+            /*
             var bp = new BackPack();
             var help = new Helper();
             string Time = "";
 
-            int countOfItems = 40000000;
+            int countOfItems = 400000;
             int maxMas = 1000;
             int maxCost = 100;
             int volume = (maxMas / 3) * countOfItems;
@@ -40,7 +61,7 @@ namespace dipl_ranec {
             Time += help.TimeFinish() + " Greedy\n";
 
             help.TimeStart();
-            //bp.RandomSearch(100);
+            bp.RandomSearch(100);
             Time += help.TimeFinish() + " Random\n";
 
             help.TimeStart();
@@ -59,7 +80,7 @@ namespace dipl_ranec {
             //help.CreateExcell(bp.Items, bp.ResultForGreedyChoice, bp.ResultForGeneticAlgorithm, bp.ResultForRandomSearch);
             Console.ReadLine();
 
-            
+            */
         }
     }
 }

@@ -45,7 +45,6 @@ namespace dipl_ranec {
             }
 
         }
-
         private void CreateTableForInputData(TextWriter writer, List<Item> data,
             List<Item> greedyResult, List<Item> geneticResult, List<Item> randomResult) {
             int id = 0;
@@ -68,7 +67,6 @@ namespace dipl_ranec {
 
             writer.WriteLine("</table>");
         }
-
         public void CreateHtmlFile(List<Item> inputItems, List<Item> greedyResult,
             List<Item> geneticResult, List<Item> to4nResult, int to4nCost, List<Item> randomResult) {
 
@@ -126,7 +124,6 @@ namespace dipl_ranec {
                 System.Diagnostics.Process.Start(tempFileName);
             }
         }
-
         public void CreateTxtFile(List<Item> data, int volume, int maxCost, int maxMas) {
             string path = "data\\" + DateTime.Now.ToString("d").Replace('.', '-') + " " +
                           DateTime.Now.ToString("T").Replace(':', '-') + ".txt";
@@ -137,7 +134,6 @@ namespace dipl_ranec {
             file.Close();
             GetDataFromTxt(path);
         }
-
         public List<Item> GetDataFromTxt(string path) {
             List<Item> data = new List<Item>();
             StreamReader file = new StreamReader(path);
@@ -152,7 +148,6 @@ namespace dipl_ranec {
             }
             return data;
         }
-
         public void CreateExcell(List<Item> data,
             List<Item> greedyResult, List<Item> geneticResult, List<Item> randomResult) {
             Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
@@ -249,11 +244,9 @@ namespace dipl_ranec {
             // nws.SaveAs("test1");
 
         }
-
         public void CreateExcell2() {     
 
         }
-
         public void MathCad() {
             IMathcadApplication mc = new Application();
             IMathcadWorksheets mwk = mc.Worksheets;
